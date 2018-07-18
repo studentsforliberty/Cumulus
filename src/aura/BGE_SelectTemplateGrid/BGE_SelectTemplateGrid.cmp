@@ -1,0 +1,26 @@
+<!--
+ - Created by bbreisnes on 2018-07-17.
+ -->
+
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId"
+                description="BGE_SelectTemplateGrid"
+                controller="BGE_Template_SVC">
+    <!-- attributes -->
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+
+    <!-- handlers-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!-- the container element determine the height of the datatable -->
+    <div style="height: 300px">
+        <lightning:datatable
+                keyField="id"
+                data="{! v.data }"
+                columns="{! v.columns }"
+                maxRowSelection="1"
+        />
+    </div>
+
+
+</aura:component>

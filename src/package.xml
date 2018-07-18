@@ -435,6 +435,7 @@
         <members>UTIL_Where</members>
         <members>UTIL_Where_TEST</members>
         <members>UTIL_iSoqlListViewConsumer</members>
+        <members>BGE_Template_SVC</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -626,6 +627,8 @@
         <members>dataProviderInterface</members>
         <members>defaultTokens</members>
         <members>svg</members>
+        <members>SingleLookupHelper</members>
+        <members>BGE_SelectTemplateGrid</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

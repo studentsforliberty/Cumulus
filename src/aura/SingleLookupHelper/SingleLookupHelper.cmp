@@ -1,0 +1,14 @@
+<!--
+ - Created by bbreisnes on 2018-07-17.
+ -->
+
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" description="SingleLookupHelper">
+
+    <aura:attribute name="fieldsArray" type="String[]" default="['Batch_Template__c']" />
+
+    <lightning:card title="Select Template">
+        <lightning:recordForm recordId="{!v.recordId}"
+                              objectApiName="DataImportBatch__c"
+                              fields="{!v.fieldsArray}" />
+    </lightning:card>
+</aura:component>

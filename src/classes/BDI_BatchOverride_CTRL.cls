@@ -97,9 +97,13 @@ public with sharing class BDI_BatchOverride_CTRL {
     */
     public PageReference save() {
         try {
+            diBatch.Status__c='Select Template';
             BDI_DataImportService.validateSettings(diBatch);
             UTIL_DMLService.upsertRecord(diBatch);
             redirect = true;
+            PageReference pageRef = new PageReference('/'+diBatch.Id);
+            pageRef.setRedirect(true);
+            return pageRef;
         } catch (Exception ex) {
             ApexPages.addMessages(ex);
         }

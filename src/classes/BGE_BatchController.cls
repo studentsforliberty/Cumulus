@@ -41,7 +41,8 @@ public with sharing class BGE_BatchController {
             result = [SELECT Id, Name, CreatedDate, Batch_Description__c, Batch_Template__c
                         FROM DataImportBatch__c
                         WHERE Name
-                        LIKE :name and Status__c
+                        LIKE :name
+                        and Status__c
                         IN: statusesSet
                         LIMIT :SQL_FILTERED_BATCHETS_LIMIT];
         }
