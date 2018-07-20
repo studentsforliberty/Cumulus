@@ -135,7 +135,8 @@ global class BGE_HandsOnGridController {
 
                         String[] dts = dtString.split('/');
 
-                        if (dts.size() == 3) {
+                        if (dts.size() == 3 && dts[2].isNumeric() && dts[1].isNumeric() && dts[0].isNumeric()) {
+
                             Date dt = Date.newInstance(Integer.valueOf(dts[2]), Integer.valueOf(dts[0]), Integer.valueOf(dts[1]));
                             dataImport.put((String) cellData.get('field'), (Object) dt);
                             dataImports.put(rowKey, (DataImport__c) dataImport);
