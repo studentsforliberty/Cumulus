@@ -578,6 +578,11 @@
                     $scope.$apply();
                 }
             }
+
+            var selectedColType = hot.getDataType(row, col);
+            if (selectedColType === "dropdown") {
+                openEditorOnSelect(row, column);
+            }
         }
 
         function afterCreateRowHandler(index, amount) {
@@ -608,6 +613,23 @@
                     if (spacebar) {
                         //prevent spacebar default behavior to auto scroll down
                         event.preventDefault();
+                    }
+                    if (enter) {
+
+
+                        if (rowIndex === 0) {
+                            hot.selectCell(rowIndex, colIndex);
+
+                        }
+
+
+                        colIndex++;
+                        if (rowIndex === 0) {
+                            hot.selectCell(rowIndex, colIndex);
+                        }
+                        else {
+                            hot.selectCell(rowIndex-1, colIndex);
+                        }
                     }
                     disableEdit(editor);
                 }
@@ -1273,6 +1295,12 @@
 
             $('th').css('height', '40px');
             $('td').css('height', '30px')
+        }
+
+        function openEditorOnSelect(row, col){
+            var editor = hot.getActiveEditor(row, col);
+            editor.beginEditing();
+            disableEdit(editor);
         }
 
     });
