@@ -595,7 +595,13 @@
                     $scope.$apply();
                 }
             }
+
+            var selectedColType = hot.getDataType(row, column);
+            if (selectedColType === "dropdown") {
+                openEditorOnSelect(row, column);
+            }
         }
+
 
         function afterCreateRowHandler(index, amount) {
 
@@ -1372,5 +1378,10 @@
             $('td').css('height', '30px')
         }
 
+        function openEditorOnSelect(row, col){
+            var editor = hot.getActiveEditor(row, col);
+            editor.beginEditing();
+            disableEdit(editor);
+        }
     });
 })();
