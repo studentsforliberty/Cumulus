@@ -815,6 +815,7 @@
                     $('ul.jq-dropdown-menu :first-child > a').focus();
                 }
                 else {
+
                     event.stopImmediatePropagation();
                     rowIndex++;
 
