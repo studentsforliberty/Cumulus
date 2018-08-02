@@ -239,15 +239,13 @@
             }
 
             var now = new Date().getTime();
-            if(!(td.lastClick && now - td.lastClick < 200)) {
+            if (!(td.lastClick && now - td.lastClick < 200)) {
                 td.lastClick = now;
+                var colType = hot.getDataType(coords.row, coords.col);
+                if (colType == "dropdown") {
+                    openEditorOnSelect(coords.row, coords.column);
+                }
                 return;
-            }
-
-            var editor =  hot.getActiveEditor();
-            var colType = hot.getDataType(coords.row, coords.col);
-            if (colType == "dropdown") {
-                editor.TEXTAREA.setAttribute("disabled", "true");
             }
         }
 
