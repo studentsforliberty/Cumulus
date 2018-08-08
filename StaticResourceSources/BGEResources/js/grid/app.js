@@ -816,10 +816,12 @@
                 }
                 else {
 
-                    event.stopImmediatePropagation();
-                    rowIndex++;
+                    if (enter) {
+                        event.stopImmediatePropagation();
+                        rowIndex++;
 
-                    hot.selectCell(rowIndex, colIndex);
+                        hot.selectCell(rowIndex, colIndex);
+                    }
                 }
             }
         }
@@ -1054,20 +1056,24 @@
 
         function setActionButtonActive(row, column) {
 
-            setTimeout(function () {
+            if (column === 2) {
 
-                if (column === 2) {
+                var selectorCell = '#actionCellId-' + row;
+                $(selectorCell).click();
+
+                setTimeout(function () {
 
                     $(".action-cell button").removeClass("action-button-active");
 
                     var selector = '#actionCellId-' + row + ' button';
                     $(selector).addClass('action-button-active')
-                }
-                else {
+                }, 250);
+            }
+            else {
+                setTimeout(function () {
                     $(".action-cell button").removeClass("action-button-active");
-                }
-
-            }, 250);
+                }, 250);
+            }
         }
 
         function addMessage(cell, errors) {
