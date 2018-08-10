@@ -648,6 +648,9 @@
 
                     disableEdit(editor);
                 }
+                else {
+                    editor.close();
+                }
             }
 
             if (tab || left || up || right || down) {
@@ -655,7 +658,6 @@
                 if (tab) {
                     event.preventDefault();
                 }
-
                 //== ACTIONS column ==//
                 if (colIndex === actionCol) {
 
@@ -1065,9 +1067,7 @@
                 $(selectorCell).click();
 
                 setTimeout(function () {
-
                     $(".action-cell button").removeClass("action-button-active");
-
                     var selector = '#actionCellId-' + row + ' button';
                     $(selector).addClass('action-button-active')
                 }, 250);
