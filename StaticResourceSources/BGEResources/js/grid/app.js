@@ -652,7 +652,7 @@
 
             if (tab || left || up || right || down) {
 
-                if (tab || enter) {
+                if (tab) {
                     event.preventDefault();
                 }
 
@@ -660,6 +660,9 @@
                 if (colIndex === actionCol) {
 
                     if (down || up) {
+                        if (up && rowIndex === 0) {
+                            event.stopImmediatePropagation();
+                        }
                         event.preventDefault();
                     }
                     else if (left || shift && tab) {
@@ -775,13 +778,13 @@
 
                         if (!isTooltipDisplayed(nextRow)) {
                             colIndex = actionCol;
-                            rowIndex++;
                         }
                         else {
                             colIndex = tooltipCol;
-                            rowIndex++;
                         }
+                        rowIndex++;
                         hot.selectCell(rowIndex, colIndex);
+                        event.stopImmediatePropagation();
                     }
                     else if (shift && right) {
                         event.preventDefault();
