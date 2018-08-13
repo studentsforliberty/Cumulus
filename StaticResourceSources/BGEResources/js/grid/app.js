@@ -568,8 +568,14 @@
          */
         function afterSelectionHandler(row, col) {
 
-            setActionButtonActive(row, col);
-            $('#action-menu-container').hide();
+            if (col === 2) {
+                setActionButtonActive(row, col);
+            }
+            else {
+                setTimeout(function () {
+                    $(".action-cell button").removeClass("action-button-active");
+                }, 250);
+            }
 
             if ($scope.lastSelectedRow === null) {
                 $scope.lastSelectedRow = row;
@@ -599,7 +605,6 @@
                 openEditorOnSelect(row, column);
             }
         }
-
 
         function afterCreateRowHandler(index, amount) {
 
@@ -648,7 +653,7 @@
 
                     disableEdit(editor);
                 }
-                else {
+                else if (left || right || tab) {
                     editor.close();
                 }
             }
@@ -787,6 +792,9 @@
                         rowIndex++;
                         hot.selectCell(rowIndex, colIndex);
                         event.stopImmediatePropagation();
+                    }
+                    else if ((shift && left) || left) {
+                        debugger;
                     }
                     else if (shift && right) {
                         event.preventDefault();
@@ -1061,22 +1069,14 @@
 
         function setActionButtonActive(row, column) {
 
-            if (column === 2) {
+            var selectorCell = '#actionCellId-' + row;
+            $(selectorCell).click();
 
-                var selectorCell = '#actionCellId-' + row;
-                $(selectorCell).click();
-
-                setTimeout(function () {
-                    $(".action-cell button").removeClass("action-button-active");
-                    var selector = '#actionCellId-' + row + ' button';
-                    $(selector).addClass('action-button-active')
-                }, 250);
-            }
-            else {
-                setTimeout(function () {
-                    $(".action-cell button").removeClass("action-button-active");
-                }, 250);
-            }
+            setTimeout(function () {
+                $(".action-cell button").removeClass("action-button-active");
+                var selector = '#actionCellId-' + row + ' button';
+                $(selector).addClass('action-button-active')
+            }, 250);
         }
 
         function addMessage(cell, errors) {
