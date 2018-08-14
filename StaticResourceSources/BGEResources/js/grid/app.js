@@ -928,6 +928,9 @@
                 var col = new Object();
                 col.data = templateField.apiName;
                 col.required = templateField.required;
+
+                //col.innerHTML = templateField.defaultValue != ''? templateField.defaultValue : '';
+                
                 col.title = getColumnTitle(templateField);
                 col.type = getCellDataType(templateField.type);
                 col.allowInvalid = true;

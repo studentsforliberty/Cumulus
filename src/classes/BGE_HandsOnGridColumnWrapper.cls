@@ -22,6 +22,9 @@ public with sharing class BGE_HandsOnGridColumnWrapper {
     public String apiName {get; set;}
     public String type {get; set;}
     public Boolean required {get; set;}
+
+    public String defaultValue {get; set;}
+
     public Map<String, String> picklistValues {get; set;}
     public Boolean isRecordType {get; set;}
 
@@ -86,6 +89,8 @@ public with sharing class BGE_HandsOnGridColumnWrapper {
         type = String.valueOf(recordFieldDescribe.getType()).toUpperCase();
         apiName = (String)templateField.get('name');
         required = (Boolean)templateField.get('required');
+
+        defaultValue = (String)templateField.get('defaultValue'); 
 
         if (type.equalsIgnoreCase('PICKLIST')) {
             picklistValues = getObjectFieldPicklistValues(recordFieldDescribe);
