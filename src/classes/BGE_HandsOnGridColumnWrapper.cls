@@ -42,7 +42,7 @@ public with sharing class BGE_HandsOnGridColumnWrapper {
         // On the Help Text - We have the Object Relation of the field we are trying to match to.
         if (String.isNotEmpty(recordFieldDescribe.getInlineHelpText())) {
 
-            System.debug(recordFieldDescribe.getName() + ' ' + recordFieldDescribe.getInlineHelpText());
+            //System.debug(recordFieldDescribe.getName() + ' ' + recordFieldDescribe.getInlineHelpText());
 
             String[] fieldsRelationship = recordFieldDescribe.getInlineHelpText().toLowerCase().split('\\.');
 

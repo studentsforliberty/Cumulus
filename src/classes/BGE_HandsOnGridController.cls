@@ -5,16 +5,21 @@ global class BGE_HandsOnGridController {
     private static final String DATA_IMPORT_NAME = 'DataImport__c';
 
     public Boolean hasError {get; set;}
+    
+    public static Map<String, String> defaultValuesMap {get; set;}
 
     public BGE_HandsOnGridController() {
 
         hasError = false;
+        defaultValuesMap = new Map<String, String>();
     }
 
     @RemoteAction
     global static Map<String, Object> initGrid(Map<String, Object> parameters) {
+        
+        defaultValuesMap = new Map<String, String>();
 
-        Map<String, Object> result = new Map<String, Object>();
+        Map<String, Object> result = new Map<String, Object>(); 
 
         BGE_HandsOnGridSelector selector = new BGE_HandsOnGridSelector();
 
@@ -30,22 +35,41 @@ global class BGE_HandsOnGridController {
         for(Object fld : templateFields){    
             Map<String,Object> data = (Map<String,Object>)fld;
 			columns.add(new BGE_HandsOnGridColumnWrapper((Map<String,Object>)data));
-           	fieldNames.add((String)data.get('name'));
+           	
+            String apiName = (String)data.get('name');
+            String defaultValue = (String)data.get('defaultValue');
+            
+            //  System.debug('apiName => ' + apiName);            
+            //  System.debug('defaultValue => ' + defaultValue);
+            //System.debug('defaultValuesMap => ' + defaultValuesMap);
+            
+            fieldNames.add(apiName);
+            
+            if (!String.isEmpty(defaultValue) ) {
+	            defaultValuesMap.put(apiName, defaultValue);
+                
+                //System.debug('defaultValuesMap (inside if) => ' + (String)defaultValuesMap.get('defaultValue'));
+                System.debug('defaultValue (inside if) => ' + defaultValuesMap.get(apiName));
+            }
         }
 
         if (!columns.isEmpty()) {
 
             SObject[] records = selector.getDataImportsByBatchId(batchId, fieldNames);
 
-            System.debug(JSON.serializePretty(records));
-
+            //System.debug('====> ' + JSON.serializePretty(records));
             result.put('templateFields', String.join(fieldNames, ';'));
             result.put('data', selector.sanitizeDataImports(records));
             result.put('templateId', batch.Batch_Template__c);
             result.put('columns', columns);
+            
+            result.put('defaultValuesMap', defaultValuesMap);
+            
             result.put('rowsCount', selector.getDataImportBatchCountByBatchId(batchId));
             result.put('rowsAmount', selector.getDataImportDonationAmountByBatchId(batchId));
         }
+        
+        System.debug('columns ==> ' + result.get('columns'));
 
         return result;
     }
@@ -74,17 +98,19 @@ global class BGE_HandsOnGridController {
         }
 
         result = runDmlCellsRowGrid(batchId, rowCells);
+        
+        System.debug('rowCells (BGE_HandOnGridController) ====> ' + rowCells);
 
         return result;
     }
 
     private static Object[] runDmlCellsRowGrid(Id batchId, Map<String, Object[]> rowCells) {
-
+        
         Map<String, DataImport__c> dataImports = new Map<String, DataImport__c>();
 
         Set<Object> result = new Set<Object>();
     
-        for (String rowKey :rowCells.keySet()) {
+        for (String rowKey : rowCells.keySet()) {
 
             SObject dataImport = (SObject) new DataImport__c(NPSP_Data_Import_Batch__c = batchId);
 
@@ -94,7 +120,7 @@ global class BGE_HandsOnGridController {
 
             dataImport.put('External_Id__c', (Object) rowKey);
 
-            for (Object cell :rowCells.get(rowKey)) {
+            for (Object cell : rowCells.get(rowKey)) {
 
                 Map<String, Object> cellData = (Map<String, Object>) cell;
                 String cellType = (String) cellData.get('type');
@@ -225,7 +251,7 @@ global class BGE_HandsOnGridController {
             }
         }
 
-        System.debug(JSON.serializePretty(result));
+        // System.debug(JSON.serializePretty(result));
         result.remove(null);
         Object[] resultCells = new Object[] {};
         resultCells.addAll(result);
@@ -298,7 +324,7 @@ global class BGE_HandsOnGridController {
 
             String cellType = (String) cellData.get('type');
 
-            System.debug((String) cellData.get('field') + (String) cellData.get('newValue'));
+            //System.debug((String) cellData.get('field') + (String) cellData.get('newValue'));
 
             try {
 
@@ -358,7 +384,7 @@ global class BGE_HandsOnGridController {
                             // If we are receiving just text or the email is valid.
                             dataImport.put((String) cellData.get('field'), cellData.get('newValue'));
 
-                            System.debug(JSON.serializePretty(dataImport));
+                            // System.debug(JSON.serializePretty(dataImport));
 
                             dataImports.put(cellKey, (DataImport__c) dataImport);
                         }
@@ -367,7 +393,7 @@ global class BGE_HandsOnGridController {
                         // If type from the frontend is number or boolean.
                         dataImport.put((String) cellData.get('field'), cellData.get('newValue'));
 
-                        System.debug(JSON.serializePretty(dataImport));
+                        // System.debug(JSON.serializePretty(dataImport));
 
                         dataImports.put(cellKey, (DataImport__c) dataImport);
                     }
