@@ -1,0 +1,45 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes"
+                controller="batchPOC_CTRL"
+                access="global" >
+
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="rowId" type="String"/>
+    <aura:attribute name="showDetails" type="boolean" default="false" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="myDI" type="String[]" default="['Name','Contact1_Firstname__c','Contact1_Lastname__c']" />
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+
+    <lightning:layout>
+
+        <lightning:layoutItem size="8" padding="around-small">
+            <lightning:card title="All DIs">
+                <lightning:datatable
+                        columns="{! v.columns }"
+                        data="{! v.data }"
+                        keyField="id"
+                        onsave ="{!c.onSave}"
+                        hideCheckboxColumn="true"
+                        onrowaction="{! c.handleRowAction }" />
+            </lightning:card>
+        </lightning:layoutItem>
+
+        <lightning:layoutItem size="4" padding="around-small">
+            <aura:if isTrue="{!v.showDetails}">
+                <lightning:card title="Record Detail">
+                    <lightning:recordForm
+                            recordId="{!v.rowId}"
+                            objectApiName="DataImport__c"
+                            layoutType="Compact"
+                            fields="{!v.myDI}"
+                            columns="1"
+                            mode="edit"
+                            onsuccess="{!c.doInit}"
+                    />
+                </lightning:card>
+            </aura:if>
+        </lightning:layoutItem>
+
+    </lightning:layout>
+</aura:component>
