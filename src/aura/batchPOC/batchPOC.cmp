@@ -7,12 +7,14 @@
     <aura:attribute name="rowId" type="String"/>
     <aura:attribute name="showDetails" type="boolean" default="false" />
     <aura:attribute name="recordId" type="Id" />
-    <aura:attribute name="myDI" type="String[]" default="['Name','Contact1_Firstname__c','Contact1_Lastname__c']" />
+    <aura:attribute name="myDI" type="String[]" default="['Name','Contact1_Firstname__c','Contact1_Lastname__c','Contact1Imported__c']" />
 
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
 
     <lightning:layout>
 
+
+        <!--
         <lightning:layoutItem size="8" padding="around-small">
             <lightning:card title="All DIs">
                 <lightning:datatable
@@ -40,6 +42,100 @@
                 </lightning:card>
             </aura:if>
         </lightning:layoutItem>
+-->
+
+
+
+
+
+
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Account">Account</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Contact">Contact</div>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <aura:iteration var="row" items="{! v.data }">
+                <tr>
+                <lightning:recordEditForm aura:id="recordViewForm"
+                                          recordId="{!row.Id}"
+                                          objectApiName="DataImport__c">
+                        <td data-label="Name">
+                            <div class="slds-truncate" title="{!row.Name}">
+                                <lightning:inputField fieldName="Name" variant="label-hidden"/>
+                            </div>
+                        </td>
+
+                        <td data-label="Account">
+                            <div class="slds-truncate" title="Account">
+                                <lightning:inputField fieldName="Account1Imported__c" variant="label-hidden"/>
+                            </div>
+                        </td>
+
+                        <td data-label="Contact">
+                            <div class="slds-truncate" title="Contact">
+                                <lightning:inputField fieldName="Contact1Imported__c" variant="label-hidden"/>
+                            </div>
+                        </td>
+                </lightning:recordEditForm>
+                </tr>
+            </aura:iteration>
+            </tbody>
+        </table>
+
+
+
+        <!--
+
+
+            <lightning:layoutItem size="12" padding="around-small">
+                <lightning:recordEditForm aura:id="recordViewForm"
+                                          recordId="{!row.Id}"
+                                          objectApiName="DataImport__c"
+                >
+                    <div class="slds-form slds-form_compound">
+                    <div class="slds-form-element__group">
+                        <div class="slds-form-element__row">
+                            <div class="slds-form-element slds-size_2-of-12">
+                                <lightning:inputField fieldName="Name" variant="label-hidden"/>
+                            </div>
+
+                            <div class="slds-form-element slds-size_2-of-12">
+                                <lightning:inputField fieldName="Contact1Imported__c" variant="label-hidden"/>
+                            </div>
+
+                            <div class="slds-form-element slds-size_2-of-12">
+                                <lightning:inputField fieldName="Account1Imported__c" variant="label-hidden"/>
+                            </div>
+
+                            <div class="slds-form-element slds-size_2-of-12">
+                                <lightning:inputField fieldName="Donation_Amount__c" variant="label-hidden"/>
+                            </div>
+
+                            <div class="slds-form-element slds-size_2-of-12">
+                                <lightning:inputField fieldName="Donation_Date__c" variant="label-hidden"/>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </lightning:recordEditForm>
+            </lightning:layoutItem>
+
+        </aura:iteration>
+-->
+
+
 
     </lightning:layout>
 </aura:component>
