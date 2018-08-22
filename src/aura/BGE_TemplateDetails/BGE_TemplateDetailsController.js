@@ -31,6 +31,7 @@
     cancel: function(component, event, helper) {
         var model = component.get('v.model');
         var mode = component.get("v.templateMetadata.mode");
+        //Create/Edit modes invoke cancel from the button; view does so from 'Back to Templates' button
         if (mode === 'create' || mode === 'view') {
             //navigate to record home
             var homeEvent = $A.get("e.force:navigateToObjectHome");
@@ -39,6 +40,8 @@
             });
             homeEvent.fire();
         } else if (mode === 'edit') {
+            model.getTemplateMetadata().clearError();
+            model.getTemplateMetadata().setDataTableChanged(false);
             model.getTemplateMetadata().setMode('view');
             model.init(component);
         }
@@ -56,7 +59,6 @@
      * @Description. Saves the full Batch Template record after step 3
      *****************************************************************/
     save: function(component, event, helper) {
-        var templateInfoData = component.get("v.templateInfo");
         var model = component.get("v.model");
         model.save();
     },
@@ -126,7 +128,6 @@
     * @Description. Moves to previous wizard step
     *****************************************************************/
     back: function(component, event, helper) {
-        var step = component.get("v.templateMetadata.progressIndicatorStep");
         var model = component.get('v.model');
         model.getTemplateMetadata().clearError();
         model.getTemplateMetadata().setDataTableChanged(false);

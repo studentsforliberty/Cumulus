@@ -95,6 +95,7 @@
         <members>BGE_TemplateNameHelper</members>
         <members>BGE_TemplateTriggerHandler</members>
         <members>BGE_Template_CTRL</members>
+        <members>BGE_Template_CTRL_TEST</members>
         <members>CAM_CascadeDeleteLookups_TDTM</members>
         <members>CAM_CascadeDeleteLookups_TEST</members>
         <members>CAO_Constants</members>
@@ -448,6 +449,7 @@
     <types>
         <members>BDI_SettingsUI</members>
         <members>BGE_SettingsUITemplate</members>
+        <members>BGE_HandsOnGridComponent</members>
         <members>RP_GettingStarted</members>
         <members>RP_GitHub</members>
         <members>RP_Youtube</members>
@@ -455,7 +457,6 @@
         <members>STG_PageHeader</members>
         <members>UTIL_FormField</members>
         <members>UTIL_InputField</members>
-        <members>UTIL_JobProgress</members>
         <members>UTIL_JobProgressLightning</members>
         <members>UTIL_NavigateBack</members>
         <members>UTIL_PageHeader</members>
@@ -1964,7 +1965,7 @@
         <members>stgLabelHHOCR</members>
         <members>stgLabelHHObject</members>
         <members>stgLabelHHSettings</members>
-        <members>stgLabelHide</members>
+        <members>stgLabelHidden</members>
         <members>stgLabelHonoreeNotificationHelpText</members>
         <members>stgLabelHonoreeNotificationOCR</members>
         <members>stgLabelLeadSettings</members>
