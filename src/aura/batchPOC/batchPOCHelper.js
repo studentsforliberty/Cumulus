@@ -20,6 +20,11 @@
         });
         $A.enqueueAction(action);
     },
+
+    clearRow: function (component, event) {
+        //component.set(.recordId, null);
+    },
+
     setDonorToContact: function (component) {
         var contactDiv = component.find("contactDiv");
         $A.util.removeClass(contactDiv, 'slds-hide');
@@ -35,7 +40,7 @@
         $A.util.removeClass(accountDiv, 'slds-hide');
     },
 
-    setBDIDonorInfo: function (component, event) {
+    saveDataImportRecord: function (component, event) {
         var donorType = component.find('donorType').get('v.value');
         console.log(donorType);
 

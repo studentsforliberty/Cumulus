@@ -33,32 +33,26 @@
         }
     },
 
-    clearRow: function (component, event, helper) {
-        var eventFields = event.getParam("fields");
-        console.log(eventFields);
-
-        eventFields.forEach(function(field){
-            evenfFields[field] = null;
-        });
-
-        event.setParam("fields", eventFields);
-    },
-
     onSubmit: function (component, event, helper) {
-
         event.preventDefault(); // stop form submission
-        helper.setBDIDonorInfo(component, event);
+        helper.saveDataImportRecord(component, event);
     },
 
-    loadRowToTable: function (component, event, helper) {
-        console.log('success!');
+    onSuccess: function (component, event, helper) {
         helper.getDIs(component);
+        var toastEvent = $A.get("e.force:showToast");
+        toastEvent.setParams({"title": "Success!","message": "The property's info has been updated.","type": "success"});
+        toastEvent.fire();
+        component.set("v.hasActiveRow",false);
+        component.set("v.hasActiveRow",true);
+        helper.setDonorToContact(component);
+        //helper.clearRow(component, event);
+
     },
 
     setDonorType: function (component, event, helper) {
         var donorType = event.getSource().get("v.value");
 
-        console.log(donorType);
         if (donorType === 'Contact1') {
             helper.setDonorToContact(component);
         } else {
