@@ -14,7 +14,11 @@ public with sharing class batchPOC_CTRL {
                 , Donation_Date__c
                 , Donation_Amount__c
                 , Donation_Donor__c
-        FROM DataImport__c WHERE NPSP_Data_Import_Batch__c = :batchId];
+                , Payment_Method__c
+                , Payment_Check_Reference_Number__c
+        FROM DataImport__c
+        WHERE NPSP_Data_Import_Batch__c = :batchId
+        ORDER BY Id ASC];
         System.debug(myDIs);
         return myDIs;
     }

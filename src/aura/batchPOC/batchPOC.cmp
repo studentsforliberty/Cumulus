@@ -31,8 +31,9 @@
       <lightning:card title="New Gift">
         <lightning:recordEditForm aura:id="recordViewForm"
                                   recordId="{!v.rowId}"
-                                  objectApiName="DataImport__c">
-
+                                  objectApiName="DataImport__c"
+                                  onsubmit="{!c.onSubmit}"
+                                  onsuccess="{!c.loadRowToTable}">
 
           <!-- Donor fields -->
           <div class="slds-grid">
@@ -73,8 +74,9 @@
 
           <div class="slds-grid slds-p-around_medium slds-grid_align-center slds-size_1-of-1">
             <div class="slds-col slds-p-horizontal_small">
-              <lightning:button label="Cancel" onclick="{!c.saveRow}" variant="neutral"/>
-              <lightning:button label="Save" onclick="{!c.saveRow}" variant="brand"/>
+
+                <lightning:button label="Cancel" onclick="{!c.clearRow}" variant="neutral"/>
+                <lightning:button variant="brand" type="submit" name="save" label="Save" />
             </div>
           </div>
         </lightning:recordEditForm>
