@@ -1,83 +1,98 @@
 <aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes"
                 controller="batchPOC_CTRL"
-                access="global" >
+                access="global">
 
-    <aura:attribute name="data" type="Object"/>
-    <aura:attribute name="columns" type="List"/>
-    <aura:attribute name="rowId" type="String"/>
-    <aura:attribute name="showDetails" type="boolean" default="false" />
-    <aura:attribute name="recordId" type="Id" />
-    <aura:attribute name="formFields" type="Object[]" default="[
-                           {name:'Contact1Imported__c', label:'Contact'},
-                           {name:'Account1Imported__c', label:'Account'},
+  <aura:attribute name="data" type="Object"/>
+  <aura:attribute name="columns" type="List"/>
+  <aura:attribute name="rowId" type="String"/>
+  <aura:attribute name="showDetails" type="boolean" default="false"/>
+  <aura:attribute name="recordId" type="Id"/>
+  <aura:attribute name="formFields" type="Object[]" default="[
                            {name:'Donation_Amount__c', label:'Amount'},
                            {name:'Donation_Date__c', label:'Donation Date'},
                            {name:'Payment_Method__c', label:'Payment Method'},
                            {name:'Payment_Check_Reference_Number__c', label:'Check Number'}
                            ]"/>
 
-    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+  <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
 
-    <lightning:layout multipleRows="true">
+  <lightning:layout multipleRows="true">
 
-        <lightning:layoutItem size="12" padding="around-small">
-            <lightning:card>
-                <div class="slds-grid slds-p-horizontal_medium">
-                    EXPECTED TOTALS MATCH STUFF HERE?
-                </div>
-            </lightning:card>
-        </lightning:layoutItem>
-
-
-        <lightning:layoutItem size="12" padding="around-small">
-            <lightning:card title="New Gift">
-                <lightning:recordEditForm aura:id="recordViewForm"
-                                          recordId="{!v.rowId}"
-                                          objectApiName="DataImport__c">
+    <lightning:layoutItem size="12" padding="around-small">
+      <lightning:card>
+        <div class="slds-grid slds-p-horizontal_medium">
+          EXPECTED TOTALS MATCH STUFF HERE!
+        </div>
+      </lightning:card>
+    </lightning:layoutItem>
 
 
+    <lightning:layoutItem size="12" padding="around-small">
+      <lightning:card title="New Gift">
+        <lightning:recordEditForm aura:id="recordViewForm"
+                                  recordId="{!v.rowId}"
+                                  objectApiName="DataImport__c">
 
-                    <div class="slds-grid">
-                        <div class="slds-col slds-p-horizontal_small">
-                            <label for="donorType">Donor Type</label>
-                            <lightning:select aura:id="donorType" label="Donor Type" onchange="{!c.setDonorType}">
-                                <option value="Contact1">Contact</option>
-                                <option value="Account1">Account</option>
-                            </lightning:select>
-                        </div>
-                        <aura:iteration items="{!v.formFields}" var="field" indexVar="index">
-                            <div class="slds-col slds-p-horizontal_small">
-                                <label for="{!field.name}">{!field.label}</label>
-                                <lightning:inputField aura:id="{!field.name}" fieldName="{!field.name}"
-                                                      variant="label-hidden"
-                                                      class="editField"
-                                />
-                            </div>
-                        </aura:iteration>
-                    </div>
 
-                    <div class="slds-grid slds-p-around_medium slds-grid_align-center slds-size_1-of-1">
-                        <div class="slds-col slds-p-horizontal_small">
-                            <lightning:button label="Cancel" onclick="{!c.saveRow}" variant="neutral"/>
-                            <lightning:button label="Save" onclick="{!c.saveRow}" variant="brand"/>
-                        </div>
-                    </div>
-                </lightning:recordEditForm>
-            </lightning:card>
-        </lightning:layoutItem>
+          <!-- Donor fields -->
+          <div class="slds-grid">
+            <div class="slds-col slds-p-horizontal_small">
+              <label for="donorType">Donor Type</label>
+              <lightning:select aura:id="donorType" label="Donor Type" onchange="{!c.setDonorType}">
+                <option value="Contact1">Contact</option>
+                <option value="Account1">Account</option>
+              </lightning:select>
+            </div>
 
-        <lightning:layoutItem size="12" padding="around-small">
-            <lightning:card title="All Gifts">
-                <lightning:datatable
-                        columns="{! v.columns }"
-                        data="{! v.data }"
-                        keyField="id"
-                        onsave ="{!c.onSave}"
-                        minColumnWidth="150"
-                        hideCheckboxColumn="true"
-                        onrowaction="{! c.handleRowAction }" />
-            </lightning:card>
-        </lightning:layoutItem>
+            <div class="slds-col slds-p-horizontal_small" aura:id="contactDiv">
+              <label for="Contact1Imported__c">Contact</label>
+              <lightning:inputField aura:id="Contact1Imported__c" fieldName="Contact1Imported__c"
+                                    variant="label-hidden"
+                                    class="editField"
+              />
+            </div>
+            <div class="slds-col slds-p-horizontal_small" aura:id="accountDiv">
+              <label for="Account1Imported__c">Account</label>
+              <lightning:inputField aura:id="Account1Imported__c" fieldName="Account1Imported__c"
+                                    variant="label-hidden"
+                                    class="editField"
+              />
+            </div>
 
-    </lightning:layout>
+            <!--Field iteration -->
+            <aura:iteration items="{!v.formFields}" var="field" indexVar="index">
+              <div class="slds-col slds-p-horizontal_small">
+                <label for="{!field.name}">{!field.label}</label>
+                <lightning:inputField aura:id="{!field.name}" fieldName="{!field.name}"
+                                      variant="label-hidden"
+                                      class="editField"
+                />
+              </div>
+            </aura:iteration>
+          </div>
+
+          <div class="slds-grid slds-p-around_medium slds-grid_align-center slds-size_1-of-1">
+            <div class="slds-col slds-p-horizontal_small">
+              <lightning:button label="Cancel" onclick="{!c.saveRow}" variant="neutral"/>
+              <lightning:button label="Save" onclick="{!c.saveRow}" variant="brand"/>
+            </div>
+          </div>
+        </lightning:recordEditForm>
+      </lightning:card>
+    </lightning:layoutItem>
+
+    <lightning:layoutItem size="12" padding="around-small">
+      <lightning:card title="All Gifts">
+        <lightning:datatable
+            columns="{! v.columns }"
+            data="{! v.data }"
+            keyField="id"
+            onsave="{!c.onSave}"
+            minColumnWidth="150"
+            hideCheckboxColumn="true"
+            onrowaction="{! c.handleRowAction }"/>
+      </lightning:card>
+    </lightning:layoutItem>
+
+  </lightning:layout>
 </aura:component>
