@@ -12,17 +12,16 @@
 
     onSuccess: function (component, event, helper) {
         helper.getDIs(component);
-        helper.showToast(component, 'Success', "New donor information has been added to the data import batch.");
+        helper.showToast(component, 'Success', "New gift has been added to the batch.");
         component.set("v.hasActiveRow",false);
-        component.set("v.hasActiveRow",true); 
-        var donorType = 'Contact1'; //component.find("donorTypePicklist").get("v.value");
-        component.set("v.donorType", donorType);
+        component.set("v.hasActiveRow",true);
 
     },
 
     setDonorType: function (component, event, helper) {
         var donorType = event.getSource().get("v.value");
         component.set("v.donorType", donorType);
+
     },
 
     updateTable: function (component, event, helper) {

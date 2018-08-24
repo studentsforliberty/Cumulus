@@ -37,21 +37,6 @@
         $A.enqueueAction(action);
     },
 
-    setDonorToContact: function (component) {
-        var contactDiv = component.find("contactDiv");
-        $A.util.removeClass(contactDiv, 'slds-hide');
-
-        var accountDiv = component.find("accountDiv");
-        $A.util.addClass(accountDiv, 'slds-hide');
-    },
-    setDonorToAccount: function (component) {
-        var contactDiv = component.find("contactDiv");
-        $A.util.addClass(contactDiv, 'slds-hide');
-
-        var accountDiv = component.find("accountDiv");
-        $A.util.removeClass(accountDiv, 'slds-hide');
-    },
-
     setDataTableRows: function(component, responseRows) {
         var rows = [];
         responseRows.forEach(function (currentRow) {
@@ -85,29 +70,6 @@
         });
 
         component.set('v.formFields', formFields);
-    },
-
-    saveDataImportRecord: function (component, event) {
-        var donorType = component.find('donorType').get('v.value');
-        console.log(donorType);
-
-        //  get all fields from the form
-        var eventFields = event.getParam("fields");
-
-        // set donor type to BDI readable format
-        eventFields.Donation_Donor__c = donorType;
-
-        // if value is present in inactive donor field, remove it
-        if (donorType === 'Account1') {
-            eventFields.Contact1Imported__c = '';
-        } else if (donorType === 'Contact1') {
-            eventFields.AccountImported__c = '';
-        }
-
-        eventFields['NPSP_Data_Import_Batch__c'] = component.get("v.recordId");
-
-        component.find('recordEditForm').submit(eventFields);
-
     },
 
     showToast: function(component, type, message) {

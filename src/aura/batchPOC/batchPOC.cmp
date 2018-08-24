@@ -37,17 +37,21 @@
                 <aura:if isTrue="{!v.hasActiveRow}">
                     <lightning:recordEditForm aura:id="recordEditForm"
                                               objectApiName="{!v.labels.dataImportObject}"
-                                              onsubmit="{!c.onSubmit}"
                                               onsuccess="{!c.onSuccess}">
 
                         <div class="slds-grid">
                             <!-- Donor fields -->
                             <div class="slds-col slds-p-horizontal_small">
                                 <label for="donorType">Donor Type</label>
-                                <lightning:select aura:id="donorType" label="Donor Type" onchange="{!c.setDonorType}">
+                                <lightning:select aura:id="donorType" label="Donor Type" value="{!v.donorType}" onchange="{!c.setDonorType}">
                                     <option value="Contact1">Contact</option>
                                     <option value="Account1">Account</option>
                                 </lightning:select>
+                            </div>
+
+                            <!-- using a hidden field to bind the pretty lightning:select above with the actual Data Import field -->
+                            <div class="slds-hide">
+                                <lightning:inputField fieldName="{!v.labels.donationDonor}" value="{!v.donorType}"/>
                             </div>
 
                             <div class="slds-col slds-p-horizontal_small">

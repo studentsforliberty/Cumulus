@@ -55,7 +55,8 @@ public with sharing class batchPOC_CTRL {
         Map<String, String> labels = new Map<String, String> {
                 'accountLookup' => Schema.SObjectType.DataImport__c.fields.Account1Imported__c.getName(),
                 'contactLookup' => Schema.SObjectType.DataImport__c.fields.Contact1Imported__c.getName(),
-                'dataImportObject' => Schema.SObjectType.DataImport__c.getName()
+                'dataImportObject' => Schema.SObjectType.DataImport__c.getName(),
+                'donationDonor' => Schema.SObjectType.DataImport__c.fields.Donation_Donor__c.getName()
         };
 
         return labels;
