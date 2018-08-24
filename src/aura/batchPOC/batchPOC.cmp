@@ -11,6 +11,7 @@
     <aura:attribute name="recordId" type="Id"/>
     <aura:attribute name="hasActiveRow" type="Boolean" default="false"/>
     <aura:attribute name="formFields" type="Object[]" default="[]"/>
+    <aura:attribute name="donorType" type="String" default="Contact1"/>
 
     <!--Events-->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
@@ -49,21 +50,22 @@
                                 </lightning:select>
                             </div>
 
-                            <div class="slds-col slds-p-horizontal_small" aura:id="contactDiv">
-                                <label for="ContactLookup">Contact</label>
-                                <lightning:inputField aura:id="ContactLookup" fieldName="{!v.labels.contactLookup}"
-                                                      variant="label-hidden"
-                                                      class="editField"
-                                />
+                            <div class="slds-col slds-p-horizontal_small">
+                                <aura:if isTrue="{!v.donorType == 'Contact1'}">
+                                    <label for="ContactLookup">Contact</label>
+                                    <lightning:inputField aura:id="ContactLookup" fieldName="{!v.labels.contactLookup}"
+                                                          variant="label-hidden"
+                                                          class="editField"
+                                    />
+                                </aura:if>
+                                <aura:if isTrue="{!v.donorType == 'Account1'}">
+                                    <label for="AccountLookup">Account</label>
+                                    <lightning:inputField aura:id="AccountLookup" fieldName="{!v.labels.accountLookup}"
+                                                          variant="label-hidden"
+                                                          class="editField"
+                                    />
+                                </aura:if>
                             </div>
-                            <div class="slds-col slds-p-horizontal_small" aura:id="accountDiv">
-                                <label for="AccountLookup">Account</label>
-                                <lightning:inputField aura:id="AccountLookup" fieldName="{!v.labels.accountLookup}"
-                                                      variant="label-hidden"
-                                                      class="editField"
-                                />
-                            </div>
-
                             <!--Field iteration -->
                             <aura:iteration items="{!v.formFields}" var="field" indexVar="index">
                                 <div class="slds-col slds-p-horizontal_small">
