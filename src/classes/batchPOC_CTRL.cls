@@ -56,7 +56,8 @@ public with sharing class batchPOC_CTRL {
                 'accountLookup' => Schema.SObjectType.DataImport__c.fields.Account1Imported__c.getName(),
                 'contactLookup' => Schema.SObjectType.DataImport__c.fields.Contact1Imported__c.getName(),
                 'dataImportObject' => Schema.SObjectType.DataImport__c.getName(),
-                'donationDonor' => Schema.SObjectType.DataImport__c.fields.Donation_Donor__c.getName()
+                'donationDonor' => Schema.SObjectType.DataImport__c.fields.Donation_Donor__c.getName(),
+                'batchIdField' => Schema.SObjectType.DataImport__c.fields.NPSP_Data_Import_Batch__c.getName()
         };
 
         return labels;

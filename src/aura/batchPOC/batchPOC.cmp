@@ -54,6 +54,11 @@
                                 <lightning:inputField fieldName="{!v.labels.donationDonor}" value="{!v.donorType}"/>
                             </div>
 
+                            <!-- using a hidden field to provide the reference to the Batch -->
+                            <div class="slds-hide">
+                                <lightning:inputField fieldName="{!v.labels.batchIdField}" value="{!v.recordId}"/>
+                            </div>
+
                             <div class="slds-col slds-p-horizontal_small">
                                 <aura:if isTrue="{!v.donorType == 'Contact1'}">
                                     <label for="ContactLookup">Contact</label>

@@ -15,17 +15,19 @@
         helper.showToast(component, 'Success', "New gift has been added to the batch.");
         component.set("v.hasActiveRow",false);
         component.set("v.hasActiveRow",true);
+    },
 
+    clearRow: function (component, event, helper) {
+        component.set("v.hasActiveRow",false);
+        component.set("v.hasActiveRow",true);
     },
 
     setDonorType: function (component, event, helper) {
         var donorType = event.getSource().get("v.value");
         component.set("v.donorType", donorType);
-
     },
 
     updateTable: function (component, event, helper) {
-
         var rows = component.get("v.data");
         var myDI = component.get("v.rowId");
         console.log(myDI);
@@ -35,5 +37,5 @@
                 rows[i].FirstName = myDI.Contact1_Firstname__c;
             }
         }
-    },
+    }
 })
