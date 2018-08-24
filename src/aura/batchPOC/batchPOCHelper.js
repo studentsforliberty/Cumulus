@@ -55,8 +55,7 @@
             columns.push({label: col.label, fieldName: col.fieldName, type: col.type, editable: col.editable});
         });
 
-        columns.push({label: 'Action', type: 'button', initialWidth: 135, typeAttributes:
-            {label: 'Delete', name: 'view_details', title: 'Click to View or Edit Details'}
+        columns.push({type: 'action', typeAttributes: { rowActions: [{label: 'Delete', name: 'delete', title: 'Delete'}] }
         });
 
         component.set('v.columns', columns);

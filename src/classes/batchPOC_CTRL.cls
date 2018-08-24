@@ -1,4 +1,11 @@
 public with sharing class batchPOC_CTRL {
+
+    @AuraEnabled
+    public static String deleteDataImportRow(Id batchId, Id dataImportId) {
+        delete new DataImport__c(Id = dataImportId);
+        return JSON.serialize(getDataImports(batchId));
+    }
+
     //this function returns all DataImport__c records to lightning component
     @AuraEnabled
     public static String getDataImportModel(Id batchId){
