@@ -5,12 +5,11 @@
     },
 
     doInit: function (component, event, helper) {
-        //creating datatable columns
-        //getting DataImport__c records from server by calling helper methods
         helper.getModel(component);
     },
 
     handleRowAction: function (component, event, helper) {
+        helper.showSpinner(component);
         var action = event.getParam('action');
         var row = event.getParam('row');
         switch (action.name) {
@@ -26,21 +25,11 @@
                     } else {
                         helper.showToast(component, 'Error', response.getReturnValue());
                     }
+                    helper.hideSpinner(component);
                 });
                 $A.enqueueAction(action);
-
-                console.log(JSON.stringify(row));
-                /*var rows = cmp.get('v.data');
-                var rowIndex = rows.indexOf(row);
-                rows.splice(rowIndex, 1);
-                cmp.set('v.data', rows);*/
                 break;
         }
-    },
-
-    onSubmit: function (component, event, helper) {
-        event.preventDefault(); // stop form submission
-        helper.saveDataImportRecord(component, event);
     },
 
     onSuccess: function (component, event, helper) {
@@ -54,16 +43,4 @@
         var donorType = event.getSource().get("v.value");
         component.set("v.donorType", donorType);
     },
-
-    updateTable: function (component, event, helper) {
-        var rows = component.get("v.data");
-        var myDI = component.get("v.rowId");
-        console.log(myDI);
-        for (var i = 0; i < rows.length; i++) {
-            console.log(rows[i]);
-            if (rows[i].id === myDI.Id) {
-                rows[i].FirstName = myDI.Contact1_Firstname__c;
-            }
-        }
-    }
 })

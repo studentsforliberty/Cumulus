@@ -19,6 +19,7 @@
     },
 
     getModel: function(component) {
+        this.showSpinner(component);
         var action = component.get("c.getDataImportModel");
         action.setParams({batchId: component.get("v.recordId")});
         action.setCallback(this, function (response) {
@@ -33,6 +34,7 @@
             } else {
                 this.showToast(component, 'Error', response.getReturnValue());
             }
+            this.hideSpinner(component);
         });
         $A.enqueueAction(action);
     },
@@ -79,5 +81,16 @@
             "type": type.toLowerCase()
         });
         toastEvent.fire();
+    },
+
+    showSpinner: function (component) {
+        var spinner = component.find("dataTableSpinner");
+        $A.util.removeClass(spinner, "slds-hide");
+    },
+
+    hideSpinner: function (component) {
+        var spinner = component.find("dataTableSpinner");
+        $A.util.addClass(spinner, "slds-hide");
     }
+
 })

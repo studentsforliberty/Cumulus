@@ -106,6 +106,7 @@
         <!--Start BGE Grid-->
         <lightning:layoutItem size="12" padding="around-small">
             <lightning:card title="All Gifts">
+                <lightning:spinner aura:id="dataTableSpinner" class="slds-hide" />
                 <lightning:datatable
                         columns="{! v.columns }"
                         data="{! v.data }"
