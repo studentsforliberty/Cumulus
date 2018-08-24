@@ -14,15 +14,16 @@ public with sharing class batchPOC_CTRL {
     }
 
     @AuraEnabled
-    public static List<DataImport__c> getDataImports(Id batchId){
+    public static List<DataImportRow> getDataImports(Id batchId){
 
         try {
-
-            List<DataImport__c> dataImportRows = [SELECT Id
+            List<DataImportRow> result = new List<DataImportRow>();
+            for (DataImport__c dataImportRecord :[SELECT Id
                     , Name
                     , Contact1_Firstname__c
                     , Contact1_Lastname__c
                     , Contact1Imported__c
+                    , Contact1Imported__r.FirstName
                     , Contact1Imported__r.LastName
                     , Account1Imported__c
                     , Account1Imported__r.Name
@@ -33,9 +34,11 @@ public with sharing class batchPOC_CTRL {
                     , Payment_Check_Reference_Number__c
             FROM DataImport__c
             WHERE NPSP_Data_Import_Batch__c = :batchId
-            ORDER BY Id ASC];
+            ORDER BY Id ASC]) {
+                result.add(new DataImportRow(dataImportRecord));
+            }
 
-            return dataImportRows;
+            return result;
         }
         catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
@@ -64,17 +67,18 @@ public with sharing class batchPOC_CTRL {
     */
     public static List<Column> getColumns() {
         List<Column> columns = new List<Column>();
-        Set<String> fields = new Set<String>{'Donation_Amount__c',
-                'Donation_Date__c',
-                'Payment_Method__c',
-                'Payment_Check_Reference_Number__c'
+        List<String> fields = new List<String>{
+            'Donation_Amount__c',
+            'Donation_Date__c',
+            'Payment_Method__c',
+            'Payment_Check_Reference_Number__c'
         };
 
         Map<String, Schema.DescribeFieldResult> fieldMap = UTIL_Describe.getAllFieldsDescribe(UTIL_Namespace.StrTokenNSPrefix('DataImport__c'));
-
-        for (Schema.DescribeFieldResult dfr : fieldMap.values()) {
-            String unnamespacedField = UTIL_Namespace.StrTokenRemoveNSPrefix(dfr.name);
-            if (fields.contains(unnamespacedField)) {
+        for (String field : fields) {
+            String namespacedField = UTIL_Namespace.StrTokenNSPrefix(field);
+            Schema.DescribeFieldResult dfr = fieldMap.get(namespacedField.toLowerCase());
+            if (dfr != null) {
                 Column col = new Column();
                 col.label = dfr.label;
                 col.fieldName = dfr.name;
@@ -84,6 +88,7 @@ public with sharing class batchPOC_CTRL {
                 columns.add(col);
             }
         }
+            
 
         return columns;
     }
@@ -103,9 +108,33 @@ public with sharing class batchPOC_CTRL {
     */
     public class DataImportModel {
         @AuraEnabled public Id id;
-        @AuraEnabled public List<DataImport__c> dataImportRows;
+        @AuraEnabled public List<DataImportRow> dataImportRows;
         @AuraEnabled public List<Column> columns;
         @AuraEnabled public Map<String, String> labels;
     }
 
+    /*******************************************************************************************************
+    * @description 
+    */
+    public class DataImportRow {
+        @AuraEnabled public String donor;
+        @AuraEnabled public DataImport__c record;
+
+        public DataImportRow(DataImport__c record) {
+            donor = getDonorName(record);
+            this.record = record;
+        }
+
+        private String getDonorName(DataImport__c record) {
+            String donorName = '';
+            if (record.Donation_Donor__c == 'Account1' && record.Account1Imported__c != null) {
+                donorName = record.Account1Imported__r.Name;
+
+            } 
+            if (record.Donation_Donor__c == 'Contact1' && record.Contact1Imported__c != null) {
+                donorName = record.Contact1Imported__r.FirstName + ' ' + record.Contact1Imported__r.LastName;
+            }
+            return donorName;
+        }
+    }
 }

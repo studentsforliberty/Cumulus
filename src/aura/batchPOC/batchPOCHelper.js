@@ -55,19 +55,16 @@
     setDataTableRows: function(component, responseRows) {
         var rows = [];
         responseRows.forEach(function (currentRow) {
-            if (currentRow.Donation_Donor__c === 'Account1') {
-                currentRow.Donor = currentRow.Account1Imported__c;
-            } else {
-                currentRow.Donor = currentRow.Contact1Imported__c;
-            }
-            rows.push(currentRow);
+            var row = currentRow.record;
+            row.donor = currentRow.donor;
+            rows.push(row);
         });
         component.set("v.data", rows);
     },
 
     setColumns: function(component, dataColumns) {
         var columns = [];
-        columns.push({label: 'Donor', fieldName: 'Donor', type: 'text', editable: false});
+        columns.push({label: 'Donor', fieldName: 'donor', type: 'text', editable: false});
 
         dataColumns.forEach(function(col){
             columns.push({label: col.label, fieldName: col.fieldName, type: col.type, editable: col.editable});
