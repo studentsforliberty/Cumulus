@@ -2461,6 +2461,7 @@
     </types>
     <types>
         <members>Batch_Template_Record_Home</members>
+        <members>Data_Import_Batch_Record_Home</members>
         <name>FlexiPage</name>
     </types>
     <types>
