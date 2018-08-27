@@ -106,15 +106,17 @@
         <!--Start BGE Grid-->
         <lightning:layoutItem size="12" padding="around-small">
             <lightning:card title="All Gifts">
-                <lightning:spinner aura:id="dataTableSpinner" class="slds-hide" />
-                <lightning:datatable
-                        columns="{! v.columns }"
-                        data="{! v.data }"
-                        keyField="id"
-                        onsave="{!c.onSave}"
-                        minColumnWidth="150"
-                        hideCheckboxColumn="true"
-                        onrowaction="{!c.handleRowAction}"/>
+                <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')}">
+                    <lightning:spinner aura:id="dataTableSpinner" class="slds-hide" />
+                    <lightning:datatable
+                            columns="{! v.columns }"
+                            data="{! v.data }"
+                            keyField="id"
+                            onsave="{!c.onSave}"
+                            minColumnWidth="150"
+                            hideCheckboxColumn="true"
+                            onrowaction="{!c.handleRowAction}"/>
+                </div>
             </lightning:card>
         </lightning:layoutItem>
         <!--End BGE Grid-->
