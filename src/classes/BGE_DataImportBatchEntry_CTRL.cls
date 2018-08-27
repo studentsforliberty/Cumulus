@@ -1,12 +1,59 @@
-public with sharing class batchPOC_CTRL {
+/*
+    Copyright (c) 2018, Salesforce.org
+    All rights reserved.
 
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Salesforce.org nor the names of
+      its contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+*/
+/**
+* @author Salesforce.org
+* @date 2018
+* @group BGE
+* @group-content //todo
+* @description Lightning Component Server Controller for the Data Import Batch Entry component.
+*/
+
+public with sharing class BGE_DataImportBatchEntry_CTRL {
+
+    /*******************************************************************************************************
+    * @description deletes data DataImport__c record
+    * @param batchId: ID of the NPSP_Data_Import_Batch__c
+    * @param dataImportId: ID of the DataImport__c
+    * @return serialized string of DataImportRow for use in the lightning:datatable
+    */
     @AuraEnabled
     public static String deleteDataImportRow(Id batchId, Id dataImportId) {
         delete new DataImport__c(Id = dataImportId);
         return JSON.serialize(getDataImports(batchId));
     }
 
-    //this function returns all DataImport__c records to lightning component
+    /*******************************************************************************************************
+    * @description initializes the data model for the BGE_DataImportBatchEntry component
+    * @param batchId: ID of the NPSP_Data_Import_Batch__c
+    * @return serialized string of dataImportModel
+    */
     @AuraEnabled
     public static String getDataImportModel(Id batchId){
 
@@ -20,6 +67,11 @@ public with sharing class batchPOC_CTRL {
         return JSON.serialize(dataImportModel);
     }
 
+    /*******************************************************************************************************
+    * @description queries the DataImport__c records associated with the given batchId
+    * @param batchId: ID of the NPSP_Data_Import_Batch__c
+    * @return list of custom DataImportRow objects for use in the lightning:datatable
+    */
     @AuraEnabled
     public static List<DataImportRow> getDataImports(Id batchId){
 
@@ -53,11 +105,10 @@ public with sharing class batchPOC_CTRL {
     }
 
     /*******************************************************************************************************
-    * @description Retrieves the object and field labels for the component.
-    * @return Map of Batch Data Import object and field name keys to their labels.
+    * @description Retrieves required schema information for the component.
+    * @return Map of DataImport__c object and field name keys to their labels.
     */
-    @AuraEnabled
-    public static Map<String, String> getBatchDataImportLabels() {
+    private static Map<String, String> getBatchDataImportLabels() {
 
         Map<String, String> labels = new Map<String, String> {
                 'accountLookup' => Schema.SObjectType.DataImport__c.fields.Account1Imported__c.getName(),
@@ -71,10 +122,10 @@ public with sharing class batchPOC_CTRL {
     }
 
     /*******************************************************************************************************
-    * @description Retrieves the related list of columns.
-    * @return list of Columns to use in Data Import grid
+    * @description Retrieves the related list of columns for DataImport__c from a specified list (currently hardcoded)
+    * @return list of Columns to use in BGE_DataImportBatchEntry table
     */
-    public static List<Column> getColumns() {
+    private static List<Column> getColumns() {
         List<Column> columns = new List<Column>();
         List<String> fields = new List<String>{
             'Donation_Amount__c',
@@ -103,7 +154,7 @@ public with sharing class batchPOC_CTRL {
     }
 
     /*******************************************************************************************************
-    * @description a class to retrieve and save information related to Active and Available fields.
+    * @description a class to retrieve information related to Active and Available fields.
     */
     public class Column {
         @AuraEnabled public String label;
@@ -123,7 +174,7 @@ public with sharing class batchPOC_CTRL {
     }
 
     /*******************************************************************************************************
-    * @description 
+    * @description a class to retrieve DataImport__c records with derived donor information.
     */
     public class DataImportRow {
         @AuraEnabled public String donor;

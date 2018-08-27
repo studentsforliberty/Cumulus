@@ -13,7 +13,7 @@
             <componentName>force:highlightsPanel</componentName>
         </componentInstances>
         <componentInstances>
-            <componentName>batchPOC</componentName>
+            <componentName>BGE_DataImportBatchEntry</componentName>
         </componentInstances>
         <name>header</name>
         <type>Region</type>

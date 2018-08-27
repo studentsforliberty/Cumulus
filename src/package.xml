@@ -85,6 +85,7 @@
         <members>BGE_AuraController_TEST</members>
         <members>BGE_BatchController</members>
         <members>BGE_BatchTemplateOverrideController</members>
+        <members>BGE_DataImportBatchEntry_CTRL</members>
         <members>BGE_DataImportBatchTriggerHandler</members>
         <members>BGE_HandsOnGridColumnWrapper</members>
         <members>BGE_HandsOnGridController</members>
@@ -443,7 +444,6 @@
         <members>UTIL_Where</members>
         <members>UTIL_Where_TEST</members>
         <members>UTIL_iSoqlListViewConsumer</members>
-        <members>batchPOC_CTRL</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -588,6 +588,7 @@
         <members>BGE_BatchMenuShowModalEvent</members>
         <members>BGE_BatchNew</members>
         <members>BGE_BatchSelection</members>
+        <members>BGE_DataImportBatchEntry</members>
         <members>BGE_EnterData</members>
         <members>BGE_GiftSelectionChange</members>
         <members>BGE_Header</members>
@@ -637,7 +638,6 @@
         <members>dataProviderInterface</members>
         <members>defaultTokens</members>
         <members>svg</members>
-        <members>batchPOC</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

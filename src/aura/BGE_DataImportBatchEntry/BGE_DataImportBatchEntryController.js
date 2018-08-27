@@ -1,13 +1,21 @@
 ({
-    clearRow: function (component, event, helper) {
-        component.set("v.hasActiveRow",false);
-        component.set("v.hasActiveRow",true);
+    /**
+     * @description: clears the active entry form
+     */
+    cancelForm: function (component, event, helper) {
+        helper.clearRow(component);
     },
 
+    /**
+     * @description: instantiates component. Only called when component is first loaded.
+     */
     doInit: function (component, event, helper) {
         helper.getModel(component);
     },
 
+    /**
+     * @description: handles selected row action in the datatable. Current option list: delete.
+     */
     handleRowAction: function (component, event, helper) {
         helper.showSpinner(component);
         var action = event.getParam('action');
@@ -32,13 +40,19 @@
         }
     },
 
+    /**
+     * @description: callback function for lightning:recordEditForm. Queries DataImport__c records,
+     * shows toast, and clears recordEditForm.
+     */
     onSuccess: function (component, event, helper) {
         helper.getDIs(component);
         helper.showToast(component, 'Success', "New gift has been added to the batch.");
-        component.set("v.hasActiveRow",false);
-        component.set("v.hasActiveRow",true);
+        helper.clearRow(component);
     },
 
+    /**
+     * @description: sets the donor type. Used to circumvent the unhelpful labeling of Account1/Contact1.
+     */
     setDonorType: function (component, event, helper) {
         var donorType = event.getSource().get("v.value");
         component.set("v.donorType", donorType);

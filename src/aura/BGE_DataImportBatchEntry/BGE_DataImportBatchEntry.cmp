@@ -1,17 +1,54 @@
+<!--
+    Copyright (c) 2018, Salesforce.org
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Salesforce.org nor the names of
+      its contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+-->
+<!--
+  @author Salesforce.org
+  @date 2018
+  @group BGE
+  @group-content //todo
+  @description Component used to view, edit, and delete DataImport__c records on the related NPSP_Data_Import_Batch__c record home.
+-->
+
 <aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes"
-                controller="batchPOC_CTRL"
+                controller="BGE_DataImportBatchEntry_CTRL"
                 access="global">
 
     <!--Public Attributes-->
-    <aura:attribute name="data" type="Object"/>
-    <aura:attribute name="columns" type="List"/>
-    <aura:attribute name="labels" type="Map"/>
-    <aura:attribute name="rowId" type="String"/>
-    <aura:attribute name="showDetails" type="Boolean" default="false"/>
-    <aura:attribute name="recordId" type="Id"/>
-    <aura:attribute name="hasActiveRow" type="Boolean" default="false"/>
-    <aura:attribute name="formFields" type="Object[]" default="[]"/>
-    <aura:attribute name="donorType" type="String" default="Contact1"/>
+    <aura:attribute name="recordId" type="Id" description="Populated by force:hasRecordId" access="public"/>
+
+    <!--Private Attributes-->
+    <aura:attribute name="data" type="Object" description="Data Import records that appear in the table" access="private"/>
+    <aura:attribute name="columns" type="List" description="Columns for the table" access="private"/>
+    <aura:attribute name="labels" type="Map" description="Labels retrieved in Apex related to Schema information." access="private"/>
+    <aura:attribute name="hasActiveRow" type="Boolean" default="false" description="Flag to rerender recordEditForm after save." access="private"/>
+    <aura:attribute name="dataImportFields" type="Object[]" default="[]" description="" access="private"/>
+    <aura:attribute name="donorType" type="String" default="Contact1" description="Used to circumvent unhelpful labeling of Account1/Contact1" access="private"/>
 
     <!--Events-->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
@@ -76,7 +113,7 @@
                                 </aura:if>
                             </div>
                             <!--Field iteration -->
-                            <aura:iteration items="{!v.formFields}" var="field" indexVar="index">
+                            <aura:iteration items="{!v.dataImportFields}" var="field" indexVar="index">
                                 <div class="slds-col slds-p-horizontal_small">
                                     <label for="{!field.name}">{!field.label}</label>
                                     <lightning:inputField aura:id="{!field.name}" fieldName="{!field.name}"
@@ -90,7 +127,7 @@
                         <!--Form buttons-->
                         <div class="slds-grid slds-p-around_medium slds-grid_align-center slds-size_1-of-1">
                             <div class="slds-col slds-p-horizontal_small">
-                                <lightning:button label="Cancel" onclick="{!c.clearRow}" variant="neutral"/>
+                                <lightning:button label="Cancel" onclick="{!c.cancelForm}" variant="neutral"/>
                                 <lightning:button variant="brand" type="submit" name="save" label="Save" />
                             </div>
                         </div>
@@ -103,7 +140,7 @@
 
         <!--End New Row-->
 
-        <!--Start BGE Grid-->
+        <!--Start BGE Table-->
         <lightning:layoutItem size="12" padding="around-small">
             <lightning:card title="All Gifts">
                 <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')}">
@@ -119,7 +156,7 @@
                 </div>
             </lightning:card>
         </lightning:layoutItem>
-        <!--End BGE Grid-->
+        <!--End BGE Table-->
 
     </lightning:layout>
     <!--End Markup-->
