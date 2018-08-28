@@ -18,7 +18,6 @@
             if (state === "SUCCESS") {
                 this.setDataTableRows(component, response.getReturnValue());
             } else {
-                console.log('error: ' + response);
                 this.showToast(component, 'Error', response.getReturnValue());
             }
         });
@@ -26,7 +25,7 @@
     },
 
     /**
-     * @description:
+     * @description: retrieves the model information. If successful, sets the model; otherwise alerts user.
      */
     getModel: function(component) {
         this.showSpinner(component);
@@ -36,11 +35,7 @@
             var state = response.getState();
             if (state === "SUCCESS") {
                 var response = JSON.parse(response.getReturnValue());
-                component.set("v.labels", response.labels);
-                this.setDataTableRows(component, response.dataImportRows);
-                this.setColumns(component, response.columns);
-                this.setDataImportFields(component, response.columns);
-                component.set("v.hasActiveRow", true);
+                this.setModel(component, response);
             } else {
                 this.showToast(component, 'Error', response.getReturnValue());
             }
@@ -93,6 +88,18 @@
         });
 
         component.set('v.dataImportFields', dataImportFields);
+    },
+
+    /**
+     * @description: sets data import fields to use dynamically in the recordEditForm.
+     * @param dataColumns: custom Column class data passed from the Apex controller.
+     */
+    setModel: function (component, model) {
+        component.set("v.labels", model.labels);
+        this.setDataTableRows(component, model.dataImportRows);
+        this.setColumns(component, model.columns);
+        this.setDataImportFields(component, model.columns);
+        component.set("v.hasActiveRow", true);
     },
 
     /**

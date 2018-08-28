@@ -86,6 +86,7 @@
         <members>BGE_BatchController</members>
         <members>BGE_BatchTemplateOverrideController</members>
         <members>BGE_DataImportBatchEntry_CTRL</members>
+        <members>BGE_DataImportBatchEntry_CTRL_TEST</members>
         <members>BGE_DataImportBatchTriggerHandler</members>
         <members>BGE_HandsOnGridColumnWrapper</members>
         <members>BGE_HandsOnGridController</members>
