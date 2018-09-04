@@ -149,6 +149,9 @@ public with sharing class BGE_DataImportBatchEntry_CTRL {
                 col.fieldName = dfr.name;
                 col.editable = true;
                 col.type = dfr.type.name().toLowerCase();
+                if (col.type == 'date') {
+                    col.type = 'date-local';
+                }
 
                 columns.add(col);
             }
