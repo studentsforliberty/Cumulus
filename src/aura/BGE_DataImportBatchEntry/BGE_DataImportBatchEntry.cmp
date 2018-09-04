@@ -116,7 +116,8 @@
                             <aura:iteration items="{!v.dataImportFields}" var="field" indexVar="index">
                                 <div class="slds-col slds-p-horizontal_small">
                                     <label for="{!field.name}">{!field.label}</label>
-                                    <lightning:inputField aura:id="{!field.name}" fieldName="{!field.name}"
+                                    <lightning:inputField aura:id="{!field.name}"
+                                                          fieldName="{!field.name}"
                                                           variant="label-hidden"
                                                           class="editField"
                                     />
@@ -153,7 +154,9 @@
                             onsave="{!c.onTableSave}"
                             minColumnWidth="150"
                             hideCheckboxColumn="true"
-                            onrowaction="{!c.handleRowAction}"/>
+                            onrowaction="{!c.handleRowAction}"
+                            showRowNumberColumn="true"
+                    />
                 </div>
             </lightning:card>
         </lightning:layoutItem>

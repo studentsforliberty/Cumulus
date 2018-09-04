@@ -49,14 +49,12 @@
      */
     handleTableSave: function(component, values) {
         debugger;
-        console.log(values);
         var action = component.get("c.updateDataImports");
         action.setParams({diList: values});
         action.setCallback(this, function (response) {
             debugger;
             var state = response.getState();
             if (state === "SUCCESS") {
-                console.log('success!');
                 this.getDIs(component);
                 this.showToast(component, 'Success', 'Gifts successfully updated.');
             } else {
@@ -76,7 +74,6 @@
             var row = currentRow.record;
             row.donor = currentRow.donor;
             rows.push(row);
-            console.log(row);
         });
         component.set("v.data", rows);
     },
