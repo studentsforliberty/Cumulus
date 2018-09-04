@@ -45,6 +45,28 @@
     },
 
     /**
+     * @description: retrieves the model information. If successful, sets the model; otherwise alerts user.
+     */
+    handleTableSave: function(component, values) {
+        debugger;
+        console.log(values);
+        var action = component.get("c.updateDataImports");
+        action.setParams({diList: values});
+        action.setCallback(this, function (response) {
+            debugger;
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                console.log('success!');
+                this.getDIs(component);
+                this.showToast(component, 'Success', 'Gifts successfully updated.');
+            } else {
+                this.showToast(component, 'Error', response.getReturnValue());
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
+     /**
      * @description: flattens the DataImportRow class data to include donor information at the same level as the rest of the DataImport__c record.
      * @param responseRows: custom DataImportRow class data passed from the Apex controller.
      */
@@ -54,6 +76,7 @@
             var row = currentRow.record;
             row.donor = currentRow.donor;
             rows.push(row);
+            console.log(row);
         });
         component.set("v.data", rows);
     },

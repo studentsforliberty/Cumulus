@@ -67,6 +67,11 @@ public with sharing class BGE_DataImportBatchEntry_CTRL {
         return JSON.serialize(dataImportModel);
     }
 
+    @AuraEnabled
+    public static void updateDataImports(List<DataImport__c> diList) {
+        database.update(diList);
+    }
+
     /*******************************************************************************************************
     * @description queries the DataImport__c records associated with the given batchId
     * @param batchId: ID of the NPSP_Data_Import_Batch__c
