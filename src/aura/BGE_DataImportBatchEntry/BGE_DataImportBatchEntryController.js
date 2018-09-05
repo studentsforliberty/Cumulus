@@ -1,12 +1,5 @@
 ({
     /**
-     * @description: clears the active entry form
-     */
-    cancelForm: function (component, event, helper) {
-        helper.clearRow(component);
-    },
-
-    /**
      * @description: instantiates component. Only called when component is first loaded.
      */
     doInit: function (component, event, helper) {
@@ -40,6 +33,21 @@
         }
     },
 
+    handleMessage: function(component, event, helper) {
+        var message = event.getParam("message");
+        var channel = event.getParam("channel");
+
+        if (channel === 'onSuccess') {
+            helper.getDIs(component);
+            helper.showToast(component, 'Success', "New gift has been added to the batch.");
+            helper.createEntryForm(component);
+        } else if (channel === 'onCancel') {
+            helper.createEntryForm(component);
+        } else if (channel === 'setDonorType') {
+            component.set("v.donorType", message);
+        }
+    },
+
 
     /**
      * @description: callback function for lightning:recordEditForm. Queries DataImport__c records,
@@ -52,21 +60,4 @@
         component.find("dataImportRowsDataTable").set("v.draftValues", null);
     },
 
-    /**
-     * @description: callback function for lightning:recordEditForm. Queries DataImport__c records,
-     * shows toast, and clears recordEditForm.
-     */
-    onSuccess: function (component, event, helper) {
-        helper.getDIs(component);
-        helper.showToast(component, 'Success', "New gift has been added to the batch.");
-        helper.clearRow(component);
-    },
-
-    /**
-     * @description: sets the donor type. Used to circumvent the unhelpful labeling of Account1/Contact1.
-     */
-    setDonorType: function (component, event, helper) {
-        var donorType = event.getSource().get("v.value");
-        component.set("v.donorType", donorType);
-    },
 })

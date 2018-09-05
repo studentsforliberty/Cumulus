@@ -1,10 +1,34 @@
 ({
     /**
-     * @description: clear the active entry form by forcing the recordEditForm to rerender with an aura:if
+     * @description: creates the form component
      */
-    clearRow: function (component) {
-        component.set("v.hasActiveRow", false);
-        component.set("v.hasActiveRow", true);
+    createEntryForm: function (component) {
+        $A.createComponent(
+            "c:BGE_EntryForm",
+            {
+                "aura:id": "entryForm",
+                "labels": component.get("v.labels"),
+                "donorType": component.get("v.donorType"),
+                "recordId": component.get("v.recordId"),
+                "dataImportFields": component.get("v.dataImportFields")
+            },
+            function(newComponent, status, errorMessage){
+                //Add the new component to the body array
+                if (status === "SUCCESS") {
+                    var body = component.get("v.body");
+                    body.push(newComponent);
+                    component.set("v.body", body);
+                }
+                else if (status === "INCOMPLETE") {
+                    console.log("No response from server or client is offline.")
+                    // Show offline error
+                }
+                else if (status === "ERROR") {
+                    console.log("Error: " + errorMessage);
+                    // Show error message
+                }
+            }
+        );
     },
 
     /**
@@ -36,6 +60,7 @@
             if (state === "SUCCESS") {
                 var response = JSON.parse(response.getReturnValue());
                 this.setModel(component, response);
+                this.createEntryForm(component, response);
             } else {
                 this.showToast(component, 'Error', response.getReturnValue());
             }
@@ -48,7 +73,6 @@
      * @description: retrieves the model information. If successful, sets the model; otherwise alerts user.
      */
     handleTableSave: function(component, values) {
-        debugger;
         var action = component.get("c.updateDataImports");
         action.setParams({diList: values});
         action.setCallback(this, function (response) {
@@ -128,13 +152,19 @@
      * @param message: body of message to display
      */
     showToast: function(component, type, message) {
-        var toastEvent = $A.get("e.force:showToast");
-        toastEvent.setParams({
+        var mode;
+        if (type === 'Error') {
+            mode = 'sticky';
+        } else {
+            mode = 'pester';
+        }
+
+        component.find('notifLib').showToast({
+            "variant": type.toLowerCase(),
+            "mode": mode,
             "title": type,
-            "message": message,
-            "type": type.toLowerCase()
+            "message": message
         });
-        toastEvent.fire();
     },
 
     /**
