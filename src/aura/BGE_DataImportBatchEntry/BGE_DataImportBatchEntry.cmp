@@ -43,7 +43,7 @@
     <aura:attribute name="recordId" type="Id" description="Populated by force:hasRecordId" access="public"/>
 
     <!--Private Attributes-->
-    <aura:attribute name="data" type="Object" description="Data Import records that appear in the table" access="public"/>
+    <aura:attribute name="data" type="List" default="[]" description="Data Import records that appear in the table" access="public"/>
     <aura:attribute name="columns" type="List" description="Columns for the table" access="public"/>
     <aura:attribute name="labels" type="Map" description="Labels retrieved in Apex related to Schema information." access="public"/>
     <aura:attribute name="dataImportFields" type="Object[]" default="[]" description="" access="public"/>
@@ -54,6 +54,7 @@
     <aura:handler event="ltng:sendMessage" action="{!c.handleMessage}"/>
 
     <!--Start Markup-->
+
     <lightning:notificationsLibrary aura:id="notifLib"/>
 
     <lightning:layout multipleRows="true">
@@ -68,8 +69,9 @@
         </lightning:layoutItem>-->
 
         <!--Start New Row-->
-        <lightning:layoutItem size="12" class="slds-p-vertical_small">
-            <lightning:card title="New Gift" aura:id="entryFormCard">
+        <lightning:layoutItem size="12" class="slds-p-bottom_x-small">
+            <lightning:card title="New Gift" aura:id="entryFormCard" class="entryFormCard">
+                <lightning:spinner aura:id="formSpinner" alternativeText="Form Loading"/>
                 <!--BGE_EntryForm dynamically rendered here-->
                 {!v.body}
             </lightning:card>
@@ -77,22 +79,34 @@
         <!--End New Row-->
 
         <!--Start BGE Table-->
-        <lightning:layoutItem size="12" class="slds-p-vertical_small">
+        <lightning:layoutItem size="12" class="slds-p-vertical_x-small">
             <lightning:card title="All Gifts">
-                <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')}">
-                    <lightning:spinner aura:id="dataTableSpinner" class="slds-hide" />
-                    <lightning:datatable
-                            aura:id="dataImportRowsDataTable"
-                            columns="{! v.columns }"
-                            data="{! v.data }"
-                            keyField="Id"
-                            onsave="{!c.onTableSave}"
-                            minColumnWidth="150"
-                            hideCheckboxColumn="true"
-                            onrowaction="{!c.handleRowAction}"
-                            showRowNumberColumn="true"
-                    />
-                </div>
+
+                <lightning:spinner aura:id="dataTableSpinner" alternativeText="Table Loading"/>
+
+                <aura:if isTrue="{!notequals(v.data.length, 0)}">
+                    <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')}">
+                        <lightning:datatable
+                                aura:id="dataImportRowsDataTable"
+                                columns="{! v.columns }"
+                                data="{! v.data }"
+                                keyField="Id"
+                                onsave="{!c.onTableSave}"
+                                minColumnWidth="150"
+                                hideCheckboxColumn="true"
+                                onrowaction="{!c.handleRowAction}"
+                                showRowNumberColumn="true"
+                        />
+                    </div>
+                    <aura:set attribute="else">
+                        <div class="slds-illustration slds-illustration_small" aria-hidden="true">
+                            <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt="No records"/>
+                            <div class="slds-text-color_weak">
+                                <h3 class="slds-text-heading_medium">No Gifts Found</h3>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
             </lightning:card>
         </lightning:layoutItem>
         <!--End BGE Table-->

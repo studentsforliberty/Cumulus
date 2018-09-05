@@ -639,6 +639,7 @@
         <members>dataProviderInterface</members>
         <members>defaultTokens</members>
         <members>svg</members>
+        <members>BGE_EntryForm</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>

@@ -35,6 +35,7 @@
      * @description: retrieves the dataImportRows and sets them to the table.
      */
     getDIs: function (component) {
+        this.showSpinner(component);
         var action = component.get("c.getDataImports");
         action.setParams({batchId: component.get("v.recordId")});
         action.setCallback(this, function (response) {
@@ -44,6 +45,7 @@
             } else {
                 this.showToast(component, 'Error', response.getReturnValue());
             }
+            this.hideSpinner(component);
         });
         $A.enqueueAction(action);
     },
@@ -52,7 +54,6 @@
      * @description: retrieves the model information. If successful, sets the model; otherwise alerts user.
      */
     getModel: function(component) {
-        this.showSpinner(component);
         var action = component.get("c.getDataImportModel");
         action.setParams({batchId: component.get("v.recordId")});
         action.setCallback(this, function (response) {
@@ -70,9 +71,10 @@
     },
 
     /**
-     * @description: retrieves the model information. If successful, sets the model; otherwise alerts user.
+     * @description: saves inline edits from dataTable.
      */
     handleTableSave: function(component, values) {
+        this.showSpinner(component);
         var action = component.get("c.updateDataImports");
         action.setParams({diList: values});
         action.setCallback(this, function (response) {
@@ -84,6 +86,7 @@
             } else {
                 this.showToast(component, 'Error', response.getReturnValue());
             }
+            this.hideSpinner(component);
         });
         $A.enqueueAction(action);
     },

@@ -45,8 +45,9 @@
     <aura:handler name="render" action="{!c.callFocus}" value="{!this}"/>
 
     <lightning:recordEditForm aura:id="recordEditForm"
-                                  objectApiName="{!v.labels.dataImportObject}"
-                                  onsuccess="{!c.onSuccess}">
+                              objectApiName="{!v.labels.dataImportObject}"
+                              onsuccess="{!c.onSuccess}"
+                              onload="{!c.onFormLoad}">
 
             <div class="slds-grid">
                 <!-- Donor fields -->
@@ -68,17 +69,17 @@
                     <lightning:inputField fieldName="{!v.labels.batchIdField}" value="{!v.recordId}"/>
                 </div>
 
-                <div class="slds-col slds-p-horizontal_small">
+                <div class="slds-col slds-p-horizontal_small" id="contactLookup">
                     <aura:if isTrue="{!v.donorType == 'Contact1'}">
                         <label for="ContactLookup">Contact</label>
-                        <lightning:inputField aura:id="ContactLookup" fieldName="{!v.labels.contactLookup}"
+                        <lightning:inputField aura:id="contactLookup" fieldName="{!v.labels.contactLookup}"
                                               variant="label-hidden"
                                               class="editField"
                         />
                     </aura:if>
                     <aura:if isTrue="{!v.donorType == 'Account1'}">
                         <label for="AccountLookup">Account</label>
-                        <lightning:inputField aura:id="AccountLookup" fieldName="{!v.labels.accountLookup}"
+                        <lightning:inputField aura:id="accountLookup" fieldName="{!v.labels.accountLookup}"
                                               variant="label-hidden"
                                               class="editField"
                         />

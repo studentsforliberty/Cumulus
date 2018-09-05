@@ -11,3 +11,6 @@
 .THIS .datatableContainer .slds-scrollable_y {
     height: 100%;
 }
+.THIS .entryFormCard {
+    min-height: 173px;
+}

@@ -7,26 +7,22 @@
      * @description: alerts parent component that form needs to be cleared
      */
     cancelForm: function (component, event, helper) {
-        var sendMessage = $A.get('e.ltng:sendMessage');
-        sendMessage.setParams({
-            'channel': 'onCancel',
-            'message': ''
-        });
-        sendMessage.fire();
+        helper.sendMessage('onCancel', '');
         component.destroy();
+    },
+
+    /**
+     * @description: hides spinner over form when form finishes loading
+     */
+    onFormLoad: function (component, event, helper) {
+        helper.sendMessage('hideFormSpinner', '');
     },
 
     /**
      * @description: alerts parent component that record is saved
      */
     onSuccess: function (component, event, helper) {
-        //throw event here
-        var sendMessage = $A.get('e.ltng:sendMessage');
-        sendMessage.setParams({
-            'channel': 'onSuccess',
-            'message': ''
-        });
-        sendMessage.fire();
+        helper.sendMessage('onSuccess', '');
         component.destroy();
     },
 
@@ -36,11 +32,7 @@
     setDonorType: function (component, event, helper) {
         var donorType = event.getSource().get("v.value");
         component.set("v.donorType", donorType);
-        var sendMessage = $A.get('e.ltng:sendMessage');
-        sendMessage.setParams({
-            'channel': 'setDonorType',
-            'message': donorType
-        });
-        sendMessage.fire();
-    },
+        helper.sendMessage('setDonorType', donorType);
+    }
+
 })
