@@ -226,6 +226,7 @@
     </fields>
     <fields>
         <fullName>Expected_Count_of_Gifts__c</fullName>
+        <defaultValue>0</defaultValue>
         <description>The number of gifts that are expected to be entered in this Batch.</description>
         <externalId>false</externalId>
         <inlineHelpText>The number of gifts that are expected to be entered in this Batch.</inlineHelpText>
@@ -240,6 +241,7 @@
     </fields>
     <fields>
         <fullName>Expected_Total_Batch_Amount__c</fullName>
+        <defaultValue>0</defaultValue>
         <description>The expected total amount of all gifts entered in this Batch.</description>
         <externalId>false</externalId>
         <inlineHelpText>The expected total amount of all gifts entered in this Batch.</inlineHelpText>

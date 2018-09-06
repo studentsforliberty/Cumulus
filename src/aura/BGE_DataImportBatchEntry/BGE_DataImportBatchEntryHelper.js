@@ -175,7 +175,7 @@
         rows.forEach(function (currentRow) {
             var row = currentRow.record;
             countGifts += 1;
-            totalGiftAmount += row.Donation_Amount__c;
+            totalGiftAmount += row[component.get("v.labels.donationAmountField")];
         });
         var totals = component.get("v.totals");
         totals.countGifts = countGifts;

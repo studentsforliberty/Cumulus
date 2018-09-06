@@ -46,10 +46,8 @@
     <aura:attribute name="labels" type="Map" description="Labels retrieved in Apex related to Schema information." access="public"/>
     <aura:attribute name="dataImportFields" type="Object[]" default="[]" description="" access="public"/>
     <aura:attribute name="donorType" type="String" default="Contact1" description="Used to circumvent unhelpful labeling of Account1/Contact1" access="public"/>
-
-    <!--Private Attributes-->
-    <aura:attribute name="record" type="Object"/>
-    <aura:attribute name="totals" type="Map" default="{countGifts: 0, totalGiftAmount: 0}"/>
+    <aura:attribute name="record" type="Object" access="public"/>
+    <aura:attribute name="totals" type="Map" default="{countGifts: 0, totalGiftAmount: 0.00}" access="public"/>
 
     <!--Events-->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
@@ -78,16 +76,6 @@
         </lightning:layoutItem>
         <!--End New Row-->
 
-        <!--Expected totals-->
-        <!--<lightning:layoutItem size="12" class="slds-p-vertical_x-small">
-            <lightning:card title="Totals">
-                <lightning:spinner aura:id="totalsSpinner" alternativeText="Totals Loading"/>
-
-
-            </lightning:card>
-        </lightning:layoutItem>-->
-        <!--End expected totals-->
-
         <!--Start BGE Table-->
         <lightning:layoutItem size="12" class="slds-p-vertical_x-small">
             <lightning:card title="All Gifts" class="bgeCard">
@@ -98,10 +86,9 @@
                 <lightning:layout multipleRows="true">
 
                     <lightning:layoutItem size="12" padding="horizontal-small">
-
-                        <aura:if isTrue="{!greaterthan(mult(100,div(v.totals.countGifts,v.record.Expected_Count_of_Gifts__c)),100)}">
+                        <!--<aura:if isTrue="{!greaterthan(mult(100,div(v.totals.countGifts,v.record.Expected_Count_of_Gifts__c)),100)}">
                             Warning: Total gift count exceeds expected gift count. <br/>
-                            <aura:set attribute="else">
+                            <aura:set attribute="else">-->
                                 <div class="slds-grid slds-grid_align-spread slds-p-bottom_x-small" id="progress-bar-label-id-3">
                                     <span>Gifts Entered</span>
                                     <span aria-hidden="true">
@@ -113,8 +100,8 @@
                                     </span>
                                 </div>
                                 <lightning:progressBar value="{!mult(100,div(v.totals.countGifts,v.record.Expected_Count_of_Gifts__c))}" size="large" />
-                            </aura:set>
-                        </aura:if>
+                            <!--</aura:set>
+                        </aura:if>-->
                     </lightning:layoutItem>
 
                     <lightning:layoutItem size="6" padding="around-small">
@@ -128,7 +115,6 @@
                 <!--End expected totals-->
 
                 <aura:if isTrue="{!notequals(v.data.length, 0)}">
-
                     <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')+' slds-p-top_small'}">
                         <lightning:datatable
                                 aura:id="dataImportRowsDataTable"
@@ -147,7 +133,8 @@
                 <div aura:id="openRoadIllustration" class="slds-illustration slds-illustration_small slds-p-top_small slds-hide" aria-hidden="true">
                     <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt="No records"/>
                     <div class="slds-text-color_weak">
-                        <h3 class="slds-text-heading_medium">No Gifts Found</h3>
+                        <h3 class="slds-text-heading_medium">Looks like you haven't entered any gifts yet!</h3>
+                        <p class="slds-text-body_regular">Enter a new gift and it will appear here</p>
                     </div>
                 </div>
 

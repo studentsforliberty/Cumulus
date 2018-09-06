@@ -115,13 +115,20 @@ public with sharing class BGE_DataImportBatchEntry_CTRL {
     */
     private static Map<String, String> getBatchDataImportLabels() {
 
+        //todo: can Schema.SObjectType.DataImport__c.fields just be in a variable?
+
         Map<String, String> labels = new Map<String, String> {
                 'accountLookup' => Schema.SObjectType.DataImport__c.fields.Account1Imported__c.getName(),
+                'batchIdField' => Schema.SObjectType.DataImport__c.fields.NPSP_Data_Import_Batch__c.getName(),
                 'contactLookup' => Schema.SObjectType.DataImport__c.fields.Contact1Imported__c.getName(),
                 'dataImportObject' => Schema.SObjectType.DataImport__c.getName(),
                 'donationDonor' => Schema.SObjectType.DataImport__c.fields.Donation_Donor__c.getName(),
-                'batchIdField' => Schema.SObjectType.DataImport__c.fields.NPSP_Data_Import_Batch__c.getName()
+                'donationAmountField' => Schema.SObjectType.DataImport__c.fields.Donation_Amount__c.getName(),
+                'expectedCountField' => Schema.SObjectType.DataImportBatch__c.fields.Expected_Count_of_Gifts__c.getName(),
+                'expectedTotalField' => Schema.SObjectType.DataImportBatch__c.fields.Expected_Total_Batch_Amount__c.getName()
         };
+
+        labels.put('forceRecordDataFields', labels.get('expectedCountField') + ',' + labels.get('expectedTotalField'));
 
         return labels;
     }
