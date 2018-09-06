@@ -86,7 +86,6 @@
         var action = component.get("c.updateDataImports");
         action.setParams({diList: values});
         action.setCallback(this, function (response) {
-            debugger;
             var state = response.getState();
             if (state === "SUCCESS") {
                 this.getDIs(component);

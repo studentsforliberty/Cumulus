@@ -99,6 +99,7 @@
                                         </strong>
                                     </span>
                                 </div>
+                                <!--Progress bar is on a 100 point scale, so just using division doesn't work here-->
                                 <lightning:progressBar value="{!mult(100,div(v.totals.countGifts,v.record.Expected_Count_of_Gifts__c))}" size="large" />
                             <!--</aura:set>
                         </aura:if>-->
