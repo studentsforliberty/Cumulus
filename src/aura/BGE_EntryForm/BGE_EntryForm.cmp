@@ -71,14 +71,14 @@
 
                 <div class="slds-col slds-p-horizontal_small" id="contactLookup">
                     <aura:if isTrue="{!v.donorType == 'Contact1'}">
-                        <label for="ContactLookup">Contact</label>
+                        <label for="contactLookup">Contact</label>
                         <lightning:inputField aura:id="contactLookup" fieldName="{!v.labels.contactLookup}"
                                               variant="label-hidden"
                                               class="editField"
                         />
                     </aura:if>
                     <aura:if isTrue="{!v.donorType == 'Account1'}">
-                        <label for="AccountLookup">Account</label>
+                        <label for="accountLookup">Account</label>
                         <lightning:inputField aura:id="accountLookup" fieldName="{!v.labels.accountLookup}"
                                               variant="label-hidden"
                                               class="editField"

@@ -41,17 +41,26 @@
 
     <!--Public Attributes-->
     <aura:attribute name="recordId" type="Id" description="Populated by force:hasRecordId" access="public"/>
-
-    <!--Private Attributes-->
     <aura:attribute name="data" type="List" default="[]" description="Data Import records that appear in the table" access="public"/>
     <aura:attribute name="columns" type="List" description="Columns for the table" access="public"/>
     <aura:attribute name="labels" type="Map" description="Labels retrieved in Apex related to Schema information." access="public"/>
     <aura:attribute name="dataImportFields" type="Object[]" default="[]" description="" access="public"/>
     <aura:attribute name="donorType" type="String" default="Contact1" description="Used to circumvent unhelpful labeling of Account1/Contact1" access="public"/>
 
+    <!--Private Attributes-->
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="totals" type="Map" default="{countGifts: 0, totalGiftAmount: 0}"/>
+
     <!--Events-->
     <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
     <aura:handler event="ltng:sendMessage" action="{!c.handleMessage}"/>
+
+    <!--Lightning Data Service for Batch Record-->
+    <force:recordData aura:id="forceRecordCmp"
+                      recordId="{!v.recordId}"
+                      fields="Expected_Count_of_Gifts__c,Expected_Total_Batch_Amount__c"
+                      targetFields="{!v.record}"
+    />
 
     <!--Start Markup-->
 
@@ -59,18 +68,9 @@
 
     <lightning:layout multipleRows="true">
 
-        <!--Expected totals-->
-        <!--<lightning:layoutItem size="12" padding="around-small">
-            <lightning:card>
-                <div class="slds-grid slds-p-horizontal_medium">
-                    EXPECTED TOTALS MATCH STUFF HERE!
-                </div>
-            </lightning:card>
-        </lightning:layoutItem>-->
-
         <!--Start New Row-->
         <lightning:layoutItem size="12" class="slds-p-bottom_x-small">
-            <lightning:card title="New Gift" aura:id="entryFormCard" class="entryFormCard">
+            <lightning:card title="New Gift" aura:id="entryFormCard" class="bgeCard">
                 <lightning:spinner aura:id="formSpinner" alternativeText="Form Loading"/>
                 <!--BGE_EntryForm dynamically rendered here-->
                 {!v.body}
@@ -78,14 +78,58 @@
         </lightning:layoutItem>
         <!--End New Row-->
 
+        <!--Expected totals-->
+        <!--<lightning:layoutItem size="12" class="slds-p-vertical_x-small">
+            <lightning:card title="Totals">
+                <lightning:spinner aura:id="totalsSpinner" alternativeText="Totals Loading"/>
+
+
+            </lightning:card>
+        </lightning:layoutItem>-->
+        <!--End expected totals-->
+
         <!--Start BGE Table-->
         <lightning:layoutItem size="12" class="slds-p-vertical_x-small">
-            <lightning:card title="All Gifts">
+            <lightning:card title="All Gifts" class="bgeCard">
 
                 <lightning:spinner aura:id="dataTableSpinner" alternativeText="Table Loading"/>
 
+                <!--Expected totals-->
+                <lightning:layout multipleRows="true">
+
+                    <lightning:layoutItem size="12" padding="horizontal-small">
+
+                        <aura:if isTrue="{!greaterthan(mult(100,div(v.totals.countGifts,v.record.Expected_Count_of_Gifts__c)),100)}">
+                            Warning: Total gift count exceeds expected gift count. <br/>
+                            <aura:set attribute="else">
+                                <div class="slds-grid slds-grid_align-spread slds-p-bottom_x-small" id="progress-bar-label-id-3">
+                                    <span>Gifts Entered</span>
+                                    <span aria-hidden="true">
+                                        <strong>
+                                            <lightning:formattedNumber value="{!v.totals.countGifts}" aura:id="actualCount"/>
+                                            of
+                                            <lightning:formattedNumber value="{!v.record.Expected_Count_of_Gifts__c}" aura:id="expectedCount"/>
+                                        </strong>
+                                    </span>
+                                </div>
+                                <lightning:progressBar value="{!mult(100,div(v.totals.countGifts,v.record.Expected_Count_of_Gifts__c))}" size="large" />
+                            </aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <label for="expectedTotalAmount">Total Amount: </label>
+                        <lightning:formattedNumber value="{!v.totals.totalGiftAmount}" style="currency" aura:id="actualTotalAmount"/>
+                        of
+                        <lightning:formattedNumber value="{!v.record.Expected_Total_Batch_Amount__c}" style="currency" aura:id="expectedTotalAmount"/><br/>
+                    </lightning:layoutItem>
+
+                </lightning:layout>
+                <!--End expected totals-->
+
                 <aura:if isTrue="{!notequals(v.data.length, 0)}">
-                    <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')}">
+
+                    <div class="{!if(lessthan(v.data.length, 4), 'datatableContainer', '')+' slds-p-top_small'}">
                         <lightning:datatable
                                 aura:id="dataImportRowsDataTable"
                                 columns="{! v.columns }"
@@ -98,15 +142,15 @@
                                 showRowNumberColumn="true"
                         />
                     </div>
-                    <aura:set attribute="else">
-                        <div class="slds-illustration slds-illustration_small" aria-hidden="true">
-                            <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt="No records"/>
-                            <div class="slds-text-color_weak">
-                                <h3 class="slds-text-heading_medium">No Gifts Found</h3>
-                            </div>
-                        </div>
-                    </aura:set>
                 </aura:if>
+
+                <div aura:id="openRoadIllustration" class="slds-illustration slds-illustration_small slds-p-top_small slds-hide" aria-hidden="true">
+                    <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt="No records"/>
+                    <div class="slds-text-color_weak">
+                        <h3 class="slds-text-heading_medium">No Gifts Found</h3>
+                    </div>
+                </div>
+
             </lightning:card>
         </lightning:layoutItem>
         <!--End BGE Table-->

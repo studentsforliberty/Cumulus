@@ -22,6 +22,7 @@
                     if (state === "SUCCESS") {
                         var response = JSON.parse(response.getReturnValue());
                         helper.setDataTableRows(component, response);
+                        helper.setTotals(component, response);
                         helper.showToast(component, 'Success', 'Gift successfully deleted.');
                     } else {
                         helper.showToast(component, 'Error', response.getReturnValue());

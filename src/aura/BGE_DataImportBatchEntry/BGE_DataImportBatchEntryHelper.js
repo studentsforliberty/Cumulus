@@ -41,7 +41,15 @@
         action.setCallback(this, function (response) {
             var state = response.getState();
             if (state === "SUCCESS") {
-                this.setDataTableRows(component, response.getReturnValue());
+                var responseRows = response.getReturnValue();
+                this.setDataTableRows(component, responseRows);
+                this.setTotals(component, responseRows);
+                var openRoad = component.find("openRoadIllustration");
+                if (responseRows.length === 0) {
+                    $A.util.removeClass(openRoad, "slds-hide");
+                } else {
+                    $A.util.addClass(openRoad, "slds-hide");
+                }
             } else {
                 this.showToast(component, 'Error', response.getReturnValue());
             }
@@ -91,20 +99,6 @@
         $A.enqueueAction(action);
     },
 
-     /**
-     * @description: flattens the DataImportRow class data to include donor information at the same level as the rest of the DataImport__c record.
-     * @param responseRows: custom DataImportRow class data passed from the Apex controller.
-     */
-    setDataTableRows: function(component, responseRows) {
-        var rows = [];
-        responseRows.forEach(function (currentRow) {
-            var row = currentRow.record;
-            row.donor = currentRow.donor;
-            rows.push(row);
-        });
-        component.set("v.data", rows);
-    },
-
     /**
      * @description: sets column with a derived Donor field, any columns passed from Apex, and available actions.
      * @param dataColumns: custom Column class data passed from the Apex controller.
@@ -138,15 +132,55 @@
     },
 
     /**
+     * @description: flattens the DataImportRow class data to include donor information at the same level as the rest of the DataImport__c record.
+     * @param responseRows: custom DataImportRow class data passed from the Apex controller.
+     */
+    setDataTableRows: function(component, responseRows) {
+        var rows = [];
+        responseRows.forEach(function (currentRow) {
+            var row = currentRow.record;
+            row.donor = currentRow.donor;
+            rows.push(row);
+        });
+
+        var openRoad = component.find("openRoadIllustration");
+        if (responseRows.length === 0) {
+            $A.util.removeClass(openRoad, "slds-hide");
+        } else {
+            $A.util.addClass(openRoad, "slds-hide");
+        }
+
+        component.set("v.data", rows);
+    },
+
+    /**
      * @description: sets data import fields to use dynamically in the recordEditForm.
      * @param dataColumns: custom Column class data passed from the Apex controller.
      */
     setModel: function (component, model) {
         component.set("v.labels", model.labels);
         this.setDataTableRows(component, model.dataImportRows);
+        this.setTotals(component, model.dataImportRows);
         this.setColumns(component, model.columns);
         this.setDataImportFields(component, model.columns);
-        component.set("v.hasActiveRow", true);
+    },
+
+    /**
+     * @description: Calculates actual totals from queried Data Import records
+     * @param rows: rows returned from the apex controller
+     */
+    setTotals: function (component, rows) {
+        var countGifts = 0;
+        var totalGiftAmount = 0;
+        rows.forEach(function (currentRow) {
+            var row = currentRow.record;
+            countGifts += 1;
+            totalGiftAmount += row.Donation_Amount__c;
+        });
+        var totals = component.get("v.totals");
+        totals.countGifts = countGifts;
+        totals.totalGiftAmount = totalGiftAmount;
+        component.set("v.totals", totals);
     },
 
     /**
